@@ -1,3 +1,3 @@
-export * from './session';
-export * from './handoff';
-export * from './agents';
+export * from './session.js';
+export * from './handoff.js';
+export * from './agents.js';

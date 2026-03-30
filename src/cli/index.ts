@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import { handoffCommand } from './commands/handoff';
-import { listCommand } from './commands/list';
+import { handoffCommand } from './commands/handoff.js';
+import { listCommand } from './commands/list.js';
 
 const program = new Command();
 

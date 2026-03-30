@@ -1,8 +1,8 @@
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import * as os from 'os';
-import { BaseExtractor } from './base';
-import type { AgentType, Session, Message } from '../types';
+import { BaseExtractor } from './base.js';
+import type { AgentType, Session, Message } from '../types/index.js';
 
 interface CursorEntry {
   role: 'user' | 'assistant';
@@ -107,8 +107,9 @@ export class CursorExtractor extends BaseExtractor {
     }
 
     return content
-      .filter(c => c.type === 'text' && c.text)
-      .map(c => c.text)
+      .filter((c: { type: string; text?: string }) => c.type === 'text' && c.text)
+      .map((c: { type: string; text?: string }) => c.text)
+      .filter((text): text is string => text !== undefined)
       .join('\n');
   }
 
@@ -121,9 +122,8 @@ export class CursorExtractor extends BaseExtractor {
         const entry: CursorEntry = JSON.parse(line);
         if (entry.role === 'user') {
           const text = this.extractContent(entry.message.content);
-          // Extract user query from<user_query> tags if present
           const match = text.match(/<user_query>\s*([\s\S]*?)\s*<\/user_query>/);
-          if (match) {
+          if (match && match[1]) {
             return match[1].slice(0, 200);
           }
           return text.slice(0, 200);

@@ -1,5 +1,5 @@
-import type { SessionInjector } from '../types/session';
-import type { AgentType, HandoffFormat } from '../types';
+import type { SessionInjector } from '../types/session.js';
+import type { AgentType, HandoffFormat } from '../types/index.js';
 
 export abstract class BaseInjector implements SessionInjector {
   abstract readonly agent: AgentType;

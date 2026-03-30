@@ -1,15 +1,14 @@
 import inquirer from 'inquirer';
 import chalk from 'chalk';
-import { getSupportedAgents, getAgentConfig } from '../types/agents';
-import { ClaudeCodeExtractor } from '../extractors/claude-code';
-import { OpenCodeExtractor } from '../extractors/opencode';
-import { CursorExtractor } from '../extractors/cursor';
-import { buildHandoff } from '../transformers';
-import { OpenCodeInjector } from '../injectors/opencode';
-import { CursorInjector } from '../injectors/cursor';
-import type { AgentType, HandoffFormat } from '../types';
+import { getSupportedAgents, getAgentConfig } from '../../types/agents.js';
+import { ClaudeCodeExtractor } from '../../extractors/claude-code.js';
+import { OpenCodeExtractor } from '../../extractors/opencode.js';
+import { CursorExtractor } from '../../extractors/cursor.js';
+import { buildHandoff } from '../../transformers/index.js';
+import { OpenCodeInjector } from '../../injectors/opencode.js';
+import { CursorInjector } from '../../injectors/cursor.js';
+import type { AgentType } from '../../types/index.js';
 import * as fs from 'fs/promises';
-import * as path from 'path';
 
 interface HandoffOptions {
   from?: AgentType;
@@ -25,13 +24,13 @@ export async function handoffCommand(options: HandoffOptions): Promise<void> {
   const supportedAgents = getSupportedAgents();
   
   // Get source agent
-  let sourceAgent = options.from;
-  if (!sourceAgent) {
+  let sourceAgent: AgentType = options.from!;
+  if (!options.from) {
     const answer = await inquirer.prompt([{
       type: 'list',
       name: 'source',
       message: 'Select source agent:',
-      choices: supportedAgents.map(a => ({
+      choices: supportedAgents.map((a: AgentType) => ({
         name: getAgentConfig(a).displayName,
         value: a,
       })),
@@ -40,15 +39,15 @@ export async function handoffCommand(options: HandoffOptions): Promise<void> {
   }
 
   // Get target agent
-  let targetAgent = options.to;
-  if (!targetAgent) {
+  let targetAgent: AgentType = options.to!;
+  if (!options.to) {
     const answer = await inquirer.prompt([{
       type: 'list',
       name: 'target',
       message: 'Select target agent:',
       choices: supportedAgents
-        .filter(a => a !== sourceAgent)
-        .map(a => ({
+        .filter((a: AgentType) => a !== sourceAgent)
+        .map((a: AgentType) => ({
           name: getAgentConfig(a).displayName,
           value: a,
         })),
@@ -70,14 +69,14 @@ export async function handoffCommand(options: HandoffOptions): Promise<void> {
   }
 
   // Get session
-  let sessionId = options.session;
-  if (!sessionId) {
+  let sessionId: string = options.session!;
+  if (!options.session) {
     const answer = await inquirer.prompt([{
       type: 'list',
       name: 'session',
       message: 'Select session to transfer:',
-      choices: sessions.slice(0, 20).map(s => ({
-        name: `${s.summary || s.id.slice(0, 8)} - ${new Date(s.updated_at).toLocaleString()}`,
+      choices: sessions.slice(0, 20).map((s: { id: string; summary?: string; updated_at: string }) => ({
+        name: `${s.summary ?? s.id.slice(0, 8)} - ${new Date(s.updated_at).toLocaleString()}`,
         value: s.id,
         short: s.id.slice(0, 8),
       })),

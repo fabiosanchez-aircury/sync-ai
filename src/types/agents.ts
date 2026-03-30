@@ -1,4 +1,4 @@
-import type { AgentType } from './session';
+import type { AgentType } from './session.js';
 
 export interface AgentConfig {
   name: AgentType;

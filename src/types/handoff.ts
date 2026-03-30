@@ -6,7 +6,7 @@ import type {
   Decision,
   FileChange,
   PendingChange,
-} from './session';
+} from './session.js';
 
 export interface HandoffMetadata {
   version: '1.0.0';

@@ -1,6 +1,6 @@
-import type { HandoffFormat, HandoffSummary, HandoffContext, HandoffContinuation } from '../types';
-import type { Session } from '../types';
-import { generateSummary } from './session-summary';
+import type { HandoffFormat, HandoffContinuation } from '../types/index.js';
+import type { Session, Message } from '../types/index.js';
+import { generateSummary, type SessionSummary as SessionSummaryType } from './session-summary.js';
 
 export function buildHandoff(
   session: Session,
@@ -23,7 +23,7 @@ export function buildHandoff(
       },
       project: {
         path: session.project_path,
-        git_branch: session.git_branch || '',
+        git_branch: session.git_branch ?? '',
         git_status: '',
       },
     },
@@ -41,14 +41,14 @@ export function buildHandoff(
       assumptions: extractAssumptions(session.messages),
     },
     files: {
-      modified: session.files_modified || [],
-      read: session.files_read || [],
-      created: session.files_created || [],
+      modified: session.files_modified ?? [],
+      read: session.files_read ?? [],
+      created: session.files_created ?? [],
       pending_changes: [],
     },
     conversation: {
       key_messages: extractKeyMessages(session.messages),
-      tool_calls: session.tool_calls || [],
+      tool_calls: session.tool_calls ?? [],
     },
     continuation: buildContinuation(session, summary, targetAgent),
   };
@@ -60,8 +60,8 @@ function buildConversationSummary(messages: Message[]): string {
   if (!messages || messages.length === 0) return '';
 
   const totalMessages = messages.length;
-  const userMessages = messages.filter(m => m.role === 'user').length;
-  const assistantMessages = messages.filter(m => m.role === 'assistant').length;
+  const userMessages = messages.filter((m: Message) => m.role === 'user').length;
+  const assistantMessages = messages.filter((m: Message) => m.role === 'assistant').length;
 
   const topics = extractTopics(messages);
   
@@ -79,8 +79,7 @@ function extractTopics(messages: Message[]): string[] {
 
   for (const msg of messages.slice(0, 10)) {
     for (const pattern of keywordPatterns) {
-      const matches = msg.content.matchAll(pattern);
-      for (const match of matches) {
+      for (const match of msg.content.matchAll(pattern)) {
         if (match[1] && !topics.includes(match[1])) {
           topics.push(match[1].toLowerCase());
         }
@@ -101,8 +100,7 @@ function extractAssumptions(messages: Message[]): string[] {
 
   for (const msg of messages) {
     for (const pattern of patterns) {
-      const matches = msg.content.matchAll(pattern);
-      for (const match of matches) {
+      for (const match of msg.content.matchAll(pattern)) {
         const assumption = match[1]?.trim();
         if (assumption && assumption.length > 5) {
           assumptions.push(assumption);
@@ -140,7 +138,7 @@ function extractKeyMessages(messages: Message[]): Message[] {
 
 function buildContinuation(
   session: Session,
-  summary: SessionSummary,
+  summary: SessionSummaryType,
   targetAgent: string
 ): HandoffContinuation {
   const filesToFocus = extractFilesToFocus(session);
@@ -160,23 +158,23 @@ function extractFilesToFocus(session: Session): string[] {
   // Files most recently read
   if (session.files_read) {
     const recentRead = session.files_read.slice(-5);
-    recentRead.forEach(f => files.add(f));
+    recentRead.forEach((f: string) => files.add(f));
   }
 
   // Files modified
   if (session.files_modified) {
-    session.files_modified.forEach(f => files.add(f.path));
+    session.files_modified.forEach((f: { path: string }) => files.add(f.path));
   }
 
   // Files created
   if (session.files_created) {
-    session.files_created.forEach(f => files.add(f));
+    session.files_created.forEach((f: string) => files.add(f));
   }
 
   return Array.from(files).slice(0, 10);
 }
 
-function buildSuggestedAction(summary: SessionSummary): string {
+function buildSuggestedAction(summary: SessionSummaryType): string {
   if (summary.blockers.length > 0) {
     return `Address blocker: ${summary.blockers[0]}`;
   }
@@ -190,7 +188,7 @@ function buildSuggestedAction(summary: SessionSummary): string {
 
 function buildContinuationPrompt(
   session: Session,
-  summary: SessionSummary,
+  summary: SessionSummaryType,
   targetAgent: string
 ): string {
   const agentNames: Record<string, string> = {
@@ -215,15 +213,15 @@ function buildContinuationPrompt(
 
   if (session.files_modified && session.files_modified.length > 0) {
     prompt += `### Files Modified\n`;
-    session.files_modified.forEach(f => {
-      prompt += `- ${f.path}: ${f.summary || f.change_type}\n`;
+    session.files_modified.forEach((f: { path: string; summary?: string; change_type: string }) => {
+      prompt += `- ${f.path}: ${f.summary ?? f.change_type}\n`;
     });
     prompt += '\n';
   }
 
   if (summary.decisions.length > 0) {
     prompt += `### Key Decisions\n`;
-    summary.decisions.forEach(d => {
+    summary.decisions.forEach((d: { decision: string; rationale?: string }) => {
       prompt += `- ${d.decision}\n`;
       if (d.rationale) {
         prompt += `  Rationale: ${d.rationale}\n`;
@@ -234,7 +232,7 @@ function buildContinuationPrompt(
 
   if (summary.learnings.length > 0) {
     prompt += `###Learnings\n`;
-    summary.learnings.forEach(l => {
+    summary.learnings.forEach((l: string) => {
       prompt += `- ${l}\n`;
     });
     prompt += '\n';
@@ -242,7 +240,7 @@ function buildContinuationPrompt(
 
   if (summary.blockers.length > 0) {
     prompt += `### Blockers\n`;
-    summary.blockers.forEach(b => {
+    summary.blockers.forEach((b: string) => {
       prompt += `- ${b}\n`;
     });
     prompt += '\n';

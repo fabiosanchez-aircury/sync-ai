@@ -59,6 +59,6 @@ export interface SessionExtractor {
 
 export interface SessionInjector {
   readonly agent: AgentType;
-  inject(handoff: HandoffFormat): Promise<{ success: boolean; session_id?: string; error?: string }>;
-  validateHandoff(handoff: HandoffFormat): Promise<{ valid: boolean; errors: string[] }>;
+  inject(handoff: import('./handoff.js').HandoffFormat): Promise<{ success: boolean; session_id?: string | undefined; error?: string }>;
+  validateHandoff(handoff: import('./handoff.js').HandoffFormat): Promise<{ valid: boolean; errors: string[] }>;
 }

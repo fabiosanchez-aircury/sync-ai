@@ -3,8 +3,8 @@ import * as util from 'util';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import * as os from 'os';
-import { BaseInjector } from './base';
-import type { AgentType, HandoffFormat } from '../types';
+import { BaseInjector } from './base.js';
+import type { AgentType, HandoffFormat } from '../types/index.js';
 
 const exec = util.promisify(child_process.exec);
 
@@ -38,7 +38,7 @@ export class OpenCodeInjector extends BaseInjector {
         
         return {
           success: true,
-          session_id: sessionIdMatch?.[1],
+          session_id: sessionIdMatch?.[1] ?? `manual-${Date.now()}`,
         };
       } catch {
         // If import doesn't work, create a context file for manual continuation
@@ -86,7 +86,7 @@ export class OpenCodeInjector extends BaseInjector {
     
     if (handoff.context.decisions.length > 0) {
       content += `## Decisions\n`;
-      handoff.context.decisions.forEach(d => {
+      handoff.context.decisions.forEach((d: { decision: string; rationale?: string }) => {
         content += `- **${d.decision}**\n`;
         if (d.rationale) {
           content += `  - Rationale: ${d.rationale}\n`;
@@ -97,7 +97,7 @@ export class OpenCodeInjector extends BaseInjector {
 
     if (handoff.context.learnings.length > 0) {
       content += `## Learnings\n`;
-      handoff.context.learnings.forEach(l => {
+      handoff.context.learnings.forEach((l: string) => {
         content += `- ${l}\n`;
       });
       content += '\n';

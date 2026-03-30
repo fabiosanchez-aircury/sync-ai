@@ -1,4 +1,4 @@
-import type { Session, Decision, Message } from '../types';
+import type { Session, Decision, Message } from '../types/index.js';
 
 export interface SessionSummary {
   goal: string;
@@ -27,13 +27,12 @@ export function generateSummary(session: Session): SessionSummary {
 }
 
 function extractGoal(session: Session): string {
-  const firstUserMessage = session.messages.find(m => m.role === 'user');
+  const firstUserMessage = session.messages.find((m: Message) => m.role === 'user');
   if (!firstUserMessage) return '';
 
   const content = firstUserMessage.content;
-  // Extract from<user_query> tags if present
   const match = content.match(/<user_query>\s*([\s\S]*?)\s*<\/user_query>/);
-  if (match) {
+  if (match && match[1]) {
     return match[1].slice(0, 500);
   }
 
@@ -45,10 +44,10 @@ function extractCurrentTask(messages: Message[]): string {
   const recentMessages = messages.slice(-10);
   for (let i = recentMessages.length - 1; i >= 0; i--) {
     const msg = recentMessages[i];
-    if (msg.role === 'assistant') {
+    if (msg && msg.role === 'assistant') {
       // Look for task indicators
       const taskMatch = msg.content.match(/(?:working on|implementing|fixing|adding):\s*([^\n]+)/i);
-      if (taskMatch) {
+      if (taskMatch && taskMatch[1]) {
         return taskMatch[1];
       }
     }
@@ -60,8 +59,8 @@ function estimateProgress(session: Session): number {
   if (!session.messages || session.messages.length === 0) return 0;
   
   // Rough estimate based on conversation length
-  const messageCount = session.messages.length;
-  const hasCompletedIndicators = session.messages.some(m => 
+  const messageCount = session.messages?.length ?? 0;
+  const hasCompletedIndicators = session.messages?.some((m: Message) => 
     m.content.toLowerCase().includes('done') ||
     m.content.toLowerCase().includes('complete') ||
     m.content.toLowerCase().includes('finished')
@@ -88,8 +87,7 @@ function extractBlockers(messages: Message[]): string[] {
   for (const msg of messages) {
     if (msg.role === 'assistant') {
       for (const pattern of blockerPatterns) {
-        const matches = msg.content.matchAll(pattern);
-        for (const match of matches) {
+        for (const match of msg.content.matchAll(pattern)) {
           if (match[1] && !blockers.includes(match[1])) {
             blockers.push(match[1].trim());
           }
@@ -112,15 +110,15 @@ function extractDecisions(messages: Message[]): Decision[] {
 
   for (let i = 0; i < messages.length; i++) {
     const msg = messages[i];
-    if (msg.role === 'assistant') {
+    if (msg && msg.role === 'assistant') {
       for (const pattern of decisionPatterns) {
-        const matches = msg.content.matchAll(pattern);
-        for (const match of matches) {
+        for (const match of msg.content.matchAll(pattern)) {
+          const decisionText = match[1] ?? match[0];
           decisions.push({
-            decision: match[1] || match[0],
+            decision: decisionText,
             rationale: extractRationale(messages, i),
             alternatives_considered: [],
-            timestamp: msg.timestamp || new Date().toISOString(),
+            timestamp: msg.timestamp ?? new Date().toISOString(),
           });
         }
       }
@@ -152,8 +150,7 @@ function extractLearnings(messages: Message[]): string[] {
   for (const msg of messages) {
     if (msg.role === 'assistant') {
       for (const pattern of learningPatterns) {
-        const matches = msg.content.matchAll(pattern);
-        for (const match of matches) {
+        for (const match of msg.content.matchAll(pattern)) {
           const learning = match[1]?.trim();
           if (learning && learning.length > 10 && !learnings.includes(learning)) {
             learnings.push(learning);

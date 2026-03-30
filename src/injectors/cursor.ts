@@ -1,8 +1,7 @@
 import * as fs from 'fs/promises';
 import * as path from 'path';
-import * as os from 'os';
-import { BaseInjector } from './base';
-import type { AgentType, HandoffFormat } from '../types';
+import { BaseInjector } from './base.js';
+import type { AgentType, HandoffFormat } from '../types/index.js';
 
 export class CursorInjector extends BaseInjector {
   readonly agent: AgentType = 'cursor';
@@ -61,7 +60,7 @@ export class CursorInjector extends BaseInjector {
 
     if (handoff.summary.blockers && handoff.summary.blockers.length > 0) {
       content += `## Blockers\n`;
-      handoff.summary.blockers.forEach(b => {
+      handoff.summary.blockers.forEach((b: string) => {
         content += `- ${b}\n`;
       });
       content += '\n';
@@ -70,7 +69,7 @@ export class CursorInjector extends BaseInjector {
     if (handoff.context.decisions.length > 0) {
       content += `## Key Decisions Made\n`;
       content += `Follow these decisions for consistency:\n\n`;
-      handoff.context.decisions.forEach(d => {
+      handoff.context.decisions.forEach((d: { decision: string; rationale?: string; alternatives_considered: string[] }) => {
         content += `### ${d.decision}\n`;
         if (d.rationale) {
           content += `Rationale: ${d.rationale}\n`;
@@ -85,7 +84,7 @@ export class CursorInjector extends BaseInjector {
     if (handoff.context.learnings.length > 0) {
       content += `## Learnings\n`;
       content += `Important discoveries from the previous session:\n\n`;
-      handoff.context.learnings.forEach(l => {
+      handoff.context.learnings.forEach((l: string) => {
         content += `- ${l}\n`;
       });
       content += '\n';
@@ -94,7 +93,7 @@ export class CursorInjector extends BaseInjector {
     if (handoff.context.assumptions.length > 0) {
       content += `## Assumptions\n`;
       content += `Working assumptions to maintain:\n\n`;
-      handoff.context.assumptions.forEach(a => {
+      handoff.context.assumptions.forEach((a: string) => {
         content += `- ${a}\n`;
       });
       content += '\n';
@@ -104,14 +103,14 @@ export class CursorInjector extends BaseInjector {
       content += `## Files Changed\n`;
       if (handoff.files.modified.length > 0) {
         content += `### Modified\n`;
-        handoff.files.modified.forEach(f => {
+        handoff.files.modified.forEach((f: { path: string; summary: string }) => {
           content += `- \`${f.path}\`: ${f.summary}\n`;
         });
         content += '\n';
       }
       if (handoff.files.created.length > 0) {
         content += `### Created\n`;
-        handoff.files.created.forEach(f => {
+        handoff.files.created.forEach((f: string) => {
           content += `- \`${f}\`\n`;
         });
         content += '\n';
@@ -121,9 +120,9 @@ export class CursorInjector extends BaseInjector {
     if (handoff.continuation.files_to_focus.length > 0) {
       content += `## Files to Focus On\n`;
       content += `Start by reviewing these files:\n\n`;
-      handoff.continuation.files_to_focus.forEach(f => {
-        content += `- \`${f}\`\n`;
-      });
+handoff.continuation.files_to_focus.forEach((f: string) => {
+      content += `- \`${f}\`\n`;
+    });
       content += '\n';
     }
 

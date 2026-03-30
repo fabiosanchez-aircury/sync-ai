@@ -1,5 +1,5 @@
-import type { SessionExtractor } from '../types/session';
-import type { AgentType, Session } from '../types';
+import type { SessionExtractor } from '../types/session.js';
+import type { AgentType, Session } from '../types/index.js';
 
 export abstract class BaseExtractor implements SessionExtractor {
   abstract readonly agent: AgentType;

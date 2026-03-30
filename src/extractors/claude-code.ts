@@ -1,8 +1,8 @@
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import * as os from 'os';
-import { BaseExtractor } from './base';
-import type { AgentType, Session, Message, ToolCall } from '../types';
+import { BaseExtractor } from './base.js';
+import type { AgentType, Session, Message, ToolCall } from '../types/index.js';
 
 interface ClaudeCodeEntry {
   type: string;

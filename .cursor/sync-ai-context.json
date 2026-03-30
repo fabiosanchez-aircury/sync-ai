@@ -1,0 +1,2726 @@
+{
+  "version": "1.0.0",
+  "metadata": {
+    "version": "1.0.0",
+    "source": {
+      "agent": "opencode",
+      "version": "",
+      "session_id": "ses_2bffda43affeplmCowFVw5TKGT",
+      "timestamp": "2026-03-30T20:03:05.820Z"
+    },
+    "target": {
+      "agent": "cursor"
+    },
+    "project": {
+      "path": "/home/fabio-aircury/work/sync-ai",
+      "git_branch": "",
+      "git_status": ""
+    }
+  },
+  "summary": {
+    "goal": "quiero crear un proyecto que sincronice las memorias de la ia por ejemplo, las memorias de una sesion de claudecode poder pasarla a opencode y que la lea y siga el hilo, hay algun proyecto en internet que haga esto ya?",
+    "progress_percentage": 90,
+    "current_task": "",
+    "status": "in_progress",
+    "blockers": [
+      "handling",
+      "más por corregir en opencode.ts.",
+      "handling and user-friendly messages",
+      "with `--home-user-project` when it expected `-home-user-project`. That means the base class returns `-home-user-project` but something is returning `--home-user-project`.",
+      "being swallowed. Let me add some debugging to see what's happening."
+    ]
+  },
+  "context": {
+    "conversation_summary": "Conversation with 292 messages (18 user, 274 assistant). Main topics: origin.",
+    "decisions": [
+      {
+        "decision": "{",
+        "rationale": "",
+        "alternatives_considered": [],
+        "timestamp": "2026-03-30T18:41:11.936Z"
+      },
+      {
+        "decision": "string;",
+        "rationale": "",
+        "alternatives_considered": [],
+        "timestamp": "2026-03-30T18:41:11.936Z"
+      },
+      {
+        "decision": "patterns in messages, but in my test mock session, I don't have decisions in the messages - I have them as a separate property on the session. But looking at the session type and how buildHandoff works:",
+        "rationale": "the decisions aren't showing in the context. Let me check the session creation - the decisions need to be in the session that gets passed to buildHandoff. The issue is that buildHandoff might not be passing decisions through properly, or the formatContentForOpenCode is checking the wrong property.",
+        "alternatives_considered": [],
+        "timestamp": "2026-03-30T19:36:32.367Z"
+      },
+      {
+        "decision": "patterns in the message content, not as a separate session property. Let me fix the test.",
+        "rationale": "the decisions aren't showing in the context. Let me check the session creation - the decisions need to be in the session that gets passed to buildHandoff. The issue is that buildHandoff might not be passing decisions through properly, or the formatContentForOpenCode is checking the wrong property.",
+        "alternatives_considered": [],
+        "timestamp": "2026-03-30T19:36:32.367Z"
+      }
+    ],
+    "learnings": [
+      "| Agent | Location | Format |",
+      "the session. Now let's create the handoff to Claude Code. Let me check the handoffcommand options."
+    ],
+    "assumptions": []
+  },
+  "files": {
+    "modified": [
+      {
+        "path": "openspec/changes/implement-session-handoff/.openspec.yaml",
+        "change_type": "modified",
+        "summary": "+2 -0"
+      },
+      {
+        "path": "openspec/changes/implement-session-handoff/design.md",
+        "change_type": "modified",
+        "summary": "+230 -0"
+      },
+      {
+        "path": "openspec/changes/implement-session-handoff/proposal.md",
+        "change_type": "modified",
+        "summary": "+80 -0"
+      },
+      {
+        "path": "openspec/changes/implement-session-handoff/specs/cli-interface/spec.md",
+        "change_type": "modified",
+        "summary": "+114 -0"
+      },
+      {
+        "path": "openspec/changes/implement-session-handoff/specs/handoff-format/spec.md",
+        "change_type": "modified",
+        "summary": "+88 -0"
+      },
+      {
+        "path": "openspec/changes/implement-session-handoff/specs/session-extraction/spec.md",
+        "change_type": "modified",
+        "summary": "+82 -0"
+      },
+      {
+        "path": "openspec/changes/implement-session-handoff/specs/session-injection/spec.md",
+        "change_type": "modified",
+        "summary": "+74 -0"
+      },
+      {
+        "path": "openspec/changes/implement-session-handoff/specs/session-transformation/spec.md",
+        "change_type": "modified",
+        "summary": "+114 -0"
+      },
+      {
+        "path": "openspec/changes/implement-session-handoff/tasks.md",
+        "change_type": "modified",
+        "summary": "+162 -0"
+      },
+      {
+        "path": "package-lock.json",
+        "change_type": "modified",
+        "summary": "+4249 -0"
+      },
+      {
+        "path": "src/cli/commands/handoff.ts",
+        "change_type": "modified",
+        "summary": "+19 -20"
+      },
+      {
+        "path": "src/cli/commands/list.ts",
+        "change_type": "modified",
+        "summary": "+53 -0"
+      },
+      {
+        "path": "src/cli/index.ts",
+        "change_type": "modified",
+        "summary": "+2 -2"
+      },
+      {
+        "path": "src/extractors/base.ts",
+        "change_type": "modified",
+        "summary": "+2 -2"
+      },
+      {
+        "path": "src/extractors/claude-code.ts",
+        "change_type": "modified",
+        "summary": "+2 -2"
+      },
+      {
+        "path": "src/extractors/cursor.ts",
+        "change_type": "modified",
+        "summary": "+6 -6"
+      },
+      {
+        "path": "src/extractors/index.ts",
+        "change_type": "modified",
+        "summary": "+4 -4"
+      },
+      {
+        "path": "src/extractors/opencode.ts",
+        "change_type": "modified",
+        "summary": "+5 -5"
+      },
+      {
+        "path": "src/injectors/base.ts",
+        "change_type": "modified",
+        "summary": "+2 -2"
+      },
+      {
+        "path": "src/injectors/cursor.ts",
+        "change_type": "modified",
+        "summary": "+11 -12"
+      },
+      {
+        "path": "src/injectors/index.ts",
+        "change_type": "modified",
+        "summary": "+3 -3"
+      },
+      {
+        "path": "src/injectors/opencode.ts",
+        "change_type": "modified",
+        "summary": "+5 -5"
+      },
+      {
+        "path": "src/transformers/context-builder.ts",
+        "change_type": "modified",
+        "summary": "+23 -25"
+      },
+      {
+        "path": "src/transformers/index.ts",
+        "change_type": "modified",
+        "summary": "+2 -2"
+      },
+      {
+        "path": "src/transformers/session-summary.ts",
+        "change_type": "modified",
+        "summary": "+14 -17"
+      },
+      {
+        "path": "src/types/agents.ts",
+        "change_type": "modified",
+        "summary": "+1 -1"
+      },
+      {
+        "path": "src/types/handoff.ts",
+        "change_type": "modified",
+        "summary": "+1 -1"
+      },
+      {
+        "path": "src/types/index.ts",
+        "change_type": "modified",
+        "summary": "+3 -3"
+      },
+      {
+        "path": "src/types/session.ts",
+        "change_type": "modified",
+        "summary": "+2 -2"
+      },
+      {
+        "path": "tsconfig.json",
+        "change_type": "modified",
+        "summary": "+1 -2"
+      },
+      {
+        "path": "AGENTS.md",
+        "change_type": "modified",
+        "summary": "+25 -1"
+      },
+      {
+        "path": "README.md",
+        "change_type": "modified",
+        "summary": "+221 -22"
+      },
+      {
+        "path": "docs/example-handoff.json",
+        "change_type": "modified",
+        "summary": "+121 -0"
+      },
+      {
+        "path": "tests/extractors/claude-code.test.ts",
+        "change_type": "modified",
+        "summary": "+42 -0"
+      },
+      {
+        "path": "tests/injectors/cursor.test.ts",
+        "change_type": "modified",
+        "summary": "+76 -0"
+      },
+      {
+        "path": "tests/transformers/context-builder.test.ts",
+        "change_type": "modified",
+        "summary": "+108 -0"
+      },
+      {
+        "path": "tests/transformers/session-summary.test.ts",
+        "change_type": "modified",
+        "summary": "+94 -0"
+      },
+      {
+        "path": "tests/types/handoff.test.ts",
+        "change_type": "modified",
+        "summary": "+46 -0"
+      },
+      {
+        "path": ".eslintrc.cjs",
+        "change_type": "modified",
+        "summary": "+23 -0"
+      },
+      {
+        "path": "openspec/specs/cli-interface/spec.md",
+        "change_type": "modified",
+        "summary": "+114 -0"
+      },
+      {
+        "path": "openspec/specs/handoff-format/spec.md",
+        "change_type": "modified",
+        "summary": "+88 -0"
+      },
+      {
+        "path": "openspec/specs/session-extraction/spec.md",
+        "change_type": "modified",
+        "summary": "+82 -0"
+      },
+      {
+        "path": "openspec/specs/session-injection/spec.md",
+        "change_type": "modified",
+        "summary": "+74 -0"
+      },
+      {
+        "path": "openspec/specs/session-transformation/spec.md",
+        "change_type": "modified",
+        "summary": "+114 -0"
+      },
+      {
+        "path": "package.json",
+        "change_type": "modified",
+        "summary": "+1 -1"
+      },
+      {
+        "path": "tests/cli/commands/list.test.ts",
+        "change_type": "modified",
+        "summary": "+83 -0"
+      },
+      {
+        "path": "tests/extractors/cursor.test.ts",
+        "change_type": "modified",
+        "summary": "+42 -0"
+      },
+      {
+        "path": "tests/injectors/opencode.test.ts",
+        "change_type": "modified",
+        "summary": "+76 -0"
+      },
+      {
+        "path": "vitest.config.ts",
+        "change_type": "modified",
+        "summary": "+11 -0"
+      },
+      {
+        "path": "tests/integration/handoff-flow.test.ts",
+        "change_type": "modified",
+        "summary": "+197 -0"
+      },
+      {
+        "path": ".gitignore",
+        "change_type": "modified",
+        "summary": "+1 -2"
+      },
+      {
+        "path": "openspec/changes/archive/2026-03-30-implement-session-handoff/.openspec.yaml",
+        "change_type": "modified",
+        "summary": "+2 -0"
+      },
+      {
+        "path": "openspec/changes/archive/2026-03-30-implement-session-handoff/design.md",
+        "change_type": "modified",
+        "summary": "+230 -0"
+      },
+      {
+        "path": "openspec/changes/archive/2026-03-30-implement-session-handoff/proposal.md",
+        "change_type": "modified",
+        "summary": "+80 -0"
+      },
+      {
+        "path": "openspec/changes/archive/2026-03-30-implement-session-handoff/specs/cli-interface/spec.md",
+        "change_type": "modified",
+        "summary": "+114 -0"
+      },
+      {
+        "path": "openspec/changes/archive/2026-03-30-implement-session-handoff/specs/handoff-format/spec.md",
+        "change_type": "modified",
+        "summary": "+88 -0"
+      },
+      {
+        "path": "openspec/changes/archive/2026-03-30-implement-session-handoff/specs/session-extraction/spec.md",
+        "change_type": "modified",
+        "summary": "+82 -0"
+      },
+      {
+        "path": "openspec/changes/archive/2026-03-30-implement-session-handoff/specs/session-injection/spec.md",
+        "change_type": "modified",
+        "summary": "+74 -0"
+      },
+      {
+        "path": "openspec/changes/archive/2026-03-30-implement-session-handoff/specs/session-transformation/spec.md",
+        "change_type": "modified",
+        "summary": "+114 -0"
+      },
+      {
+        "path": "openspec/changes/archive/2026-03-30-implement-session-handoff/tasks.md",
+        "change_type": "modified",
+        "summary": "+92 -0"
+      }
+    ],
+    "read": [],
+    "created": [],
+    "pending_changes": []
+  },
+  "conversation": {
+    "key_messages": [
+      {
+        "role": "user",
+        "content": "quiero crear un proyecto que sincronice las memorias de la ia por ejemplo, las memorias de una sesion de claudecode poder pasarla a opencode y que la lea y siga el hilo, hay algun proyecto en internet que haga esto ya?",
+        "timestamp": "2026-03-30T18:29:49.656Z",
+        "important": true
+      },
+      {
+        "role": "assistant",
+        "content": "<reasoning>\nNo sync-ai project yet. Let me check the format of an existing ClaudeCode session.\n</reasoning>",
+        "timestamp": "2026-03-30T20:02:01.876Z"
+      },
+      {
+        "role": "assistant",
+        "content": "Exacto. El formato de Claude Code es JSONL con estructuras específicas (UUIDs, parentUuid, etc.). Necesitamos crear un **Claude Code Injector**.\n\n**Opciones:**\n\n1. **Injector completo** - Crear sesión JSONL nativa de Claude Code (complejo, requiere estructuras específicas)\n\n2. **Injector simplificado** - Crear archivo `AGENTS.md` en el proyecto con el contexto (fácil, Claude Code lo lee automáticamente)\n\n3. **Ambos** - Intentar crear sesión nativa, y si falla, usar AGENTS.md como fallback\n\n¿Cuál prefieres? Yo recomiendo la **opción 3**.\n\nPara actualizar los specs habría que:\n1. Añadir `claude-code.ts` en `src/injectors/`\n2. Actualizar `src/injectors/index.ts`\n3. Actualizar spec de `session-injection`\n4. Actualizar tareas\n\n<reasoning>\nI can see the Claude Code session format now. It's a JSONL format with entries like:\n- `{\"type\":\"user\", \"message\":{\"role\":\"user\",\"content\":\"...\"}, ...}`\n- `{\"type\":\"assistant\", \"message\":{\"role\":\"assistant\",\"content\":[...]}, ...}`\n\nThe format is more complex than I thought. Each message has a specific structure with UUIDs, timestamps, parent UUIDs, etc.\n\nTo create a proper injector for Claude Code, I would need to:\n1. Create a new session directory (encoded project path)\n2. Generate a new session ID\n3. Convert OpenCode messages to Claude Code format\n4. Write the JSONL file\n\nHowever, this is complex because:\n- Claude Code expects specific message structures\n- Each message needs UUIDs linked to parent messages\n- The session has metadata files\n\nA simpler approach would be to:\n1. Write the handoff context to a `AGENTS.md` or similar file that Claude Code can read\n2. Or create a \"continuation prompt\" that the user can paste\n\nLet me propose to the user what we can do. The specs would need to be updated to add a Claude Code injector.\n</reasoning>",
+        "timestamp": "2026-03-30T20:02:07.618Z"
+      },
+      {
+        "role": "user",
+        "content": "bueno de momento tenemos para cursor, entonces lo importa en cursor como chat? lo podemos probar?",
+        "timestamp": "2026-03-30T20:02:58.948Z"
+      },
+      {
+        "role": "assistant",
+        "content": "<reasoning>\nThe user wants to test importing into Cursor. Let me check if we have a Cursor injector and try to use it.\n</reasoning>",
+        "timestamp": "2026-03-30T20:02:58.965Z"
+      }
+    ],
+    "tool_calls": [
+      {
+        "name": "webfetch",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:29:49.669Z"
+      },
+      {
+        "name": "webfetch",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:29:49.669Z"
+      },
+      {
+        "name": "webfetch",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:29:54.025Z"
+      },
+      {
+        "name": "webfetch",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:29:54.025Z"
+      },
+      {
+        "name": "webfetch",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:29:54.025Z"
+      },
+      {
+        "name": "webfetch",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:30:03.159Z"
+      },
+      {
+        "name": "webfetch",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:30:03.159Z"
+      },
+      {
+        "name": "webfetch",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:31:16.195Z"
+      },
+      {
+        "name": "webfetch",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:31:16.195Z"
+      },
+      {
+        "name": "webfetch",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:31:16.195Z"
+      },
+      {
+        "name": "webfetch",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:31:38.074Z"
+      },
+      {
+        "name": "webfetch",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:31:38.074Z"
+      },
+      {
+        "name": "webfetch",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:35:31.656Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:35:31.656Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:35:31.656Z"
+      },
+      {
+        "name": "webfetch",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:35:39.845Z"
+      },
+      {
+        "name": "webfetch",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:35:39.845Z"
+      },
+      {
+        "name": "webfetch",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:35:39.845Z"
+      },
+      {
+        "name": "webfetch",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:35:59.531Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:35:59.531Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:35:59.531Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:36:04.921Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:36:04.921Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:36:09.187Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:36:09.187Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:40:30.911Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:40:30.911Z"
+      },
+      {
+        "name": "webfetch",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:40:30.911Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:40:45.812Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:40:45.812Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:40:45.812Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:41:01.340Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:41:01.340Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:41:04.652Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:41:04.652Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:42:31.356Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:42:31.356Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:42:47.031Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:42:51.867Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:42:51.867Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:42:55.217Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:42:59.447Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:42:59.447Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:42:59.447Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:42:59.447Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:42:59.447Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:44:08.648Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:44:08.648Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:44:08.648Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:44:08.648Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:44:08.648Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:44:08.648Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:44:08.648Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:44:08.648Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:44:08.648Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:44:08.648Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:45:49.062Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:45:49.062Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:45:49.062Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:45:49.062Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:45:49.062Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:45:49.062Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:45:49.062Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:45:49.062Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:45:49.062Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:48:47.182Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:49:04.800Z"
+      },
+      {
+        "name": "skill",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:49:18.876Z"
+      },
+      {
+        "name": "todowrite",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:49:37.533Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:49:49.282Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:49:53.179Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:49:57.203Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:50:08.763Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:51:01.671Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:51:05.491Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:51:08.782Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:51:14.171Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:51:14.171Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:51:14.171Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:51:14.171Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:51:14.171Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:53:32.368Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:53:36.576Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:54:54.048Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:54:57.663Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:56:05.809Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:56:09.782Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:56:12.773Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:56:19.550Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:56:19.550Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:56:19.550Z"
+      },
+      {
+        "name": "todowrite",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:56:26.511Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:57:18.736Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:57:18.736Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:57:27.393Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:57:27.393Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:57:27.393Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:57:37.150Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:57:37.150Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:57:37.150Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:57:41.135Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:57:41.135Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:57:51.210Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:57:51.210Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:57:55.894Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:58:03.048Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:59:13.952Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:59:33.330Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:59:44.603Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:59:55.289Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:59:55.289Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T18:59:55.289Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:00:00.658Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:00:00.658Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:00:15.383Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:00:15.383Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:00:37.217Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:00:37.217Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:00:37.217Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:00:42.010Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:00:42.010Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:00:42.010Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:16.077Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:16.077Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:21.145Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:21.145Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:21.145Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:21.145Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:39.461Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:39.461Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:39.461Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:39.461Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:44.064Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:44.064Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:44.064Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:44.064Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:44.064Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:44.064Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:44.064Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:44.064Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:44.064Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:44.064Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:44.064Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:44.064Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:44.064Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:01:44.064Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:03:09.853Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:03:09.853Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:03:13.604Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:03:13.604Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:03:13.604Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:03:13.604Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:03:13.604Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:03:37.974Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:03:37.974Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:03:37.974Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:03:37.974Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:03:37.974Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:03:37.974Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:03:37.974Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:03:37.974Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:03:37.974Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:03:37.974Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:03:37.974Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:05:07.400Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:05:07.400Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:05:07.400Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:05:12.021Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:05:12.021Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:05:12.021Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:05:12.021Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:05:12.021Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:05:12.021Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:05:33.218Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:05:48.382Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:05:51.769Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:06:32.821Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:06:32.821Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:06:32.821Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:06:32.821Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:06:32.821Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:06:32.821Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:06:32.821Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:07:25.954Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:07:29.084Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:07:35.341Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:08:07.717Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:08:22.516Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:08:25.710Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:08:25.710Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:08:52.851Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:08:59.050Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:09:01.962Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:09:08.165Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:09:11.737Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:09:25.804Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:09:28.809Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:09:33.797Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:09:45.088Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:10:07.325Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:10:12.322Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:10:17.237Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:10:26.032Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:10:36.670Z"
+      },
+      {
+        "name": "todowrite",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:10:45.961Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:11:51.496Z"
+      },
+      {
+        "name": "todowrite",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:12:11.873Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:12:34.111Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:12:43.462Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:13:14.664Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:13:19.087Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:13:19.087Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:13:38.268Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:13:43.261Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:13:53.743Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:13:53.743Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:13:53.743Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:13:53.743Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:13:53.743Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:13:53.743Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:15:23.052Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:15:27.260Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:15:43.656Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:15:47.180Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:15:50.819Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:16:02.103Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:16:05.943Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:16:42.913Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:16:47.708Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:18:24.731Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:18:24.731Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:19:11.888Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:20:32.101Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:20:35.081Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:20:56.484Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:21:23.841Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:21:26.912Z"
+      },
+      {
+        "name": "skill",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:22:44.673Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:22:52.161Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:23:01.230Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:23:03.794Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:23:05.539Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:23:11.019Z"
+      },
+      {
+        "name": "question",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:23:28.414Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:24:54.873Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:25:00.783Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:25:12.175Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:25:12.175Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:27:23.341Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:27:23.341Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:27:27.530Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:27:27.530Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:27:35.320Z"
+      },
+      {
+        "name": "todowrite",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:27:37.880Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:27:41.988Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:27:47.311Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:27:49.679Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:27:53.360Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:27:56.587Z"
+      },
+      {
+        "name": "todowrite",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:27:59.507Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:28:20.270Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:28:22.315Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:28:25.170Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:28:31.601Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:28:34.196Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:28:36.023Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:28:55.296Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:28:55.296Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:28:58.062Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:29:00.512Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:29:20.385Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:29:24.337Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:29:27.335Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:29:36.739Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:29:41.473Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:29:44.621Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:29:47.908Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:29:49.765Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:29:54.030Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:29:56.545Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:30:02.022Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:30:04.170Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:30:06.313Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:30:49.779Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:30:54.725Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:31:05.763Z"
+      },
+      {
+        "name": "todowrite",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:31:11.662Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:31:14.651Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:31:18.760Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:31:22.235Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:31:24.157Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:31:32.725Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:31:35.135Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:31:38.329Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:31:42.003Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:31:44.350Z"
+      },
+      {
+        "name": "todowrite",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:31:46.320Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:31:50.695Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:31:52.518Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:31:54.579Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:31:56.653Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:31:58.748Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:32:00.525Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:32:03.553Z"
+      },
+      {
+        "name": "todowrite",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:35:18.501Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:35:24.412Z"
+      },
+      {
+        "name": "write",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:35:26.781Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:36:19.364Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:36:24.017Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:36:28.645Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:36:32.367Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:37:20.181Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:37:36.434Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:37:45.349Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:37:49.368Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:37:56.032Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:37:59.636Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:38:08.878Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:38:14.529Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:38:16.723Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:38:22.020Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:38:32.422Z"
+      },
+      {
+        "name": "todowrite",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:38:35.705Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:38:40.215Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:40:45.551Z"
+      },
+      {
+        "name": "todowrite",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:41:18.931Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:41:23.591Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:41:26.239Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:41:48.596Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:42:03.124Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:42:14.025Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:42:15.596Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:42:32.804Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:42:35.016Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:42:39.031Z"
+      },
+      {
+        "name": "todowrite",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:42:42.963Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:42:45.866Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:42:47.734Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:42:49.875Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:43:58.156Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:44:02.631Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:44:56.520Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:44:58.898Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:45:58.876Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:47:02.824Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:47:13.126Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:47:20.313Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:52:51.005Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:52:54.640Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:52:58.672Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:53:00.708Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:53:02.535Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:53:09.487Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:54:10.752Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:54:23.183Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:54:26.302Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:54:34.682Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:54:38.429Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:54:41.317Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:54:48.357Z"
+      },
+      {
+        "name": "read",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:54:57.299Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:55:14.733Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:55:20.288Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:55:35.441Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:55:45.462Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:55:50.624Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:57:03.290Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:57:10.014Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:57:20.879Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:57:31.371Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:57:40.681Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:57:48.804Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:58:06.253Z"
+      },
+      {
+        "name": "edit",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:58:10.333Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:59:47.620Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T19:59:54.807Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T20:00:04.245Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T20:00:11.699Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T20:00:40.587Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T20:01:46.952Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T20:01:54.497Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T20:01:58.191Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T20:02:01.876Z"
+      },
+      {
+        "name": "bash",
+        "input": {},
+        "result": "",
+        "timestamp": "2026-03-30T20:02:58.965Z"
+      }
+    ]
+  },
+  "continuation": {
+    "prompt": "## Session Handoff from OpenCode to Cursor\n\n### Context\nThis is a continuation of a previous session. The following context has been transferred from OpenCode.\n\n### Goal\nquiero crear un proyecto que sincronice las memorias de la ia por ejemplo, las memorias de una sesion de claudecode poder pasarla a opencode y que la lea y siga el hilo, hay algun proyecto en internet que haga esto ya?\n\n### Progress\n- Estimated completion: 90%\n- Current task: N/A\n\n### Files Modified\n- openspec/changes/implement-session-handoff/.openspec.yaml: +2 -0\n- openspec/changes/implement-session-handoff/design.md: +230 -0\n- openspec/changes/implement-session-handoff/proposal.md: +80 -0\n- openspec/changes/implement-session-handoff/specs/cli-interface/spec.md: +114 -0\n- openspec/changes/implement-session-handoff/specs/handoff-format/spec.md: +88 -0\n- openspec/changes/implement-session-handoff/specs/session-extraction/spec.md: +82 -0\n- openspec/changes/implement-session-handoff/specs/session-injection/spec.md: +74 -0\n- openspec/changes/implement-session-handoff/specs/session-transformation/spec.md: +114 -0\n- openspec/changes/implement-session-handoff/tasks.md: +162 -0\n- package-lock.json: +4249 -0\n- src/cli/commands/handoff.ts: +19 -20\n- src/cli/commands/list.ts: +53 -0\n- src/cli/index.ts: +2 -2\n- src/extractors/base.ts: +2 -2\n- src/extractors/claude-code.ts: +2 -2\n- src/extractors/cursor.ts: +6 -6\n- src/extractors/index.ts: +4 -4\n- src/extractors/opencode.ts: +5 -5\n- src/injectors/base.ts: +2 -2\n- src/injectors/cursor.ts: +11 -12\n- src/injectors/index.ts: +3 -3\n- src/injectors/opencode.ts: +5 -5\n- src/transformers/context-builder.ts: +23 -25\n- src/transformers/index.ts: +2 -2\n- src/transformers/session-summary.ts: +14 -17\n- src/types/agents.ts: +1 -1\n- src/types/handoff.ts: +1 -1\n- src/types/index.ts: +3 -3\n- src/types/session.ts: +2 -2\n- tsconfig.json: +1 -2\n- AGENTS.md: +25 -1\n- README.md: +221 -22\n- docs/example-handoff.json: +121 -0\n- tests/extractors/claude-code.test.ts: +42 -0\n- tests/injectors/cursor.test.ts: +76 -0\n- tests/transformers/context-builder.test.ts: +108 -0\n- tests/transformers/session-summary.test.ts: +94 -0\n- tests/types/handoff.test.ts: +46 -0\n- .eslintrc.cjs: +23 -0\n- openspec/specs/cli-interface/spec.md: +114 -0\n- openspec/specs/handoff-format/spec.md: +88 -0\n- openspec/specs/session-extraction/spec.md: +82 -0\n- openspec/specs/session-injection/spec.md: +74 -0\n- openspec/specs/session-transformation/spec.md: +114 -0\n- package.json: +1 -1\n- tests/cli/commands/list.test.ts: +83 -0\n- tests/extractors/cursor.test.ts: +42 -0\n- tests/injectors/opencode.test.ts: +76 -0\n- vitest.config.ts: +11 -0\n- tests/integration/handoff-flow.test.ts: +197 -0\n- .gitignore: +1 -2\n- openspec/changes/archive/2026-03-30-implement-session-handoff/.openspec.yaml: +2 -0\n- openspec/changes/archive/2026-03-30-implement-session-handoff/design.md: +230 -0\n- openspec/changes/archive/2026-03-30-implement-session-handoff/proposal.md: +80 -0\n- openspec/changes/archive/2026-03-30-implement-session-handoff/specs/cli-interface/spec.md: +114 -0\n- openspec/changes/archive/2026-03-30-implement-session-handoff/specs/handoff-format/spec.md: +88 -0\n- openspec/changes/archive/2026-03-30-implement-session-handoff/specs/session-extraction/spec.md: +82 -0\n- openspec/changes/archive/2026-03-30-implement-session-handoff/specs/session-injection/spec.md: +74 -0\n- openspec/changes/archive/2026-03-30-implement-session-handoff/specs/session-transformation/spec.md: +114 -0\n- openspec/changes/archive/2026-03-30-implement-session-handoff/tasks.md: +92 -0\n\n### Key Decisions\n- {\n- string;\n- patterns in messages, but in my test mock session, I don't have decisions in the messages - I have them as a separate property on the session. But looking at the session type and how buildHandoff works:\n  Rationale: the decisions aren't showing in the context. Let me check the session creation - the decisions need to be in the session that gets passed to buildHandoff. The issue is that buildHandoff might not be passing decisions through properly, or the formatContentForOpenCode is checking the wrong property.\n- patterns in the message content, not as a separate session property. Let me fix the test.\n  Rationale: the decisions aren't showing in the context. Let me check the session creation - the decisions need to be in the session that gets passed to buildHandoff. The issue is that buildHandoff might not be passing decisions through properly, or the formatContentForOpenCode is checking the wrong property.\n\n###Learnings\n- | Agent | Location | Format |\n- the session. Now let's create the handoff to Claude Code. Let me check the handoffcommand options.\n\n### Blockers\n- handling\n- más por corregir en opencode.ts.\n- handling and user-friendly messages\n- with `--home-user-project` when it expected `-home-user-project`. That means the base class returns `-home-user-project` but something is returning `--home-user-project`.\n- being swallowed. Let me add some debugging to see what's happening.\n\n### What to do next\nAddress blocker: handling\n\nPlease continue from where we left off, maintaining consistency with the decisions and patterns already established.",
+    "suggested_first_action": "Address blocker: handling",
+    "files_to_focus": [
+      "openspec/changes/implement-session-handoff/.openspec.yaml",
+      "openspec/changes/implement-session-handoff/design.md",
+      "openspec/changes/implement-session-handoff/proposal.md",
+      "openspec/changes/implement-session-handoff/specs/cli-interface/spec.md",
+      "openspec/changes/implement-session-handoff/specs/handoff-format/spec.md",
+      "openspec/changes/implement-session-handoff/specs/session-extraction/spec.md",
+      "openspec/changes/implement-session-handoff/specs/session-injection/spec.md",
+      "openspec/changes/implement-session-handoff/specs/session-transformation/spec.md",
+      "openspec/changes/implement-session-handoff/tasks.md",
+      "package-lock.json"
+    ]
+  }
+}

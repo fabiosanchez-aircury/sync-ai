@@ -2,23 +2,38 @@ import * as child_process from 'child_process';
 import * as util from 'util';
 import * as path from 'path';
 import * as os from 'os';
+import * as fs from 'fs/promises';
 import { BaseExtractor } from './base.js';
 import type { AgentType, Session, Message, ToolCall, FileChange } from '../types/index.js';
 
 const exec = util.promisify(child_process.exec);
 
-interface OpenCodeSession {
-  id: string;
-  project?: string;
-  created?: string;
-  updated?: string;
-  title?: string;
+interface OpenCodeExport {
+  info: {
+    id: string;
+    title?: string;
+    summary?: { additions: number; deletions: number; files: number };
+    time?: { created: number; updated: number };
+  };
+  messages: OpenCodeMessage[];
 }
 
 interface OpenCodeMessage {
-  role: 'user' | 'assistant';
-  content: string;
-  timestamp?: string;
+  info: {
+    role: 'user' | 'assistant';
+    time?: { created?: number };
+    summary?: { diffs: { file: string; additions: number; deletions: number }[] };
+  };
+  parts: OpenCodePart[];
+}
+
+interface OpenCodePart {
+  type: string;
+  text?: string;
+  tool?: string;
+  callID?: string;
+  input?: Record<string, unknown>;
+  output?: string;
 }
 
 export class OpenCodeExtractor extends BaseExtractor {
@@ -34,9 +49,9 @@ export class OpenCodeExtractor extends BaseExtractor {
         maxBuffer: 1024 * 1024 * 10,
       });
 
-      const sessions: OpenCodeSession[] = JSON.parse(stdout);
+      const sessions: { id: string; title?: string; created?: string; updated?: string }[] = JSON.parse(stdout);
       
-      return sessions.map((s: OpenCodeSession) => ({
+      return sessions.map((s) => ({
         id: s.id,
         agent: this.agent,
         project_path: _projectPath,
@@ -44,38 +59,39 @@ export class OpenCodeExtractor extends BaseExtractor {
         updated_at: s.updated ?? new Date().toISOString(),
         messages: [],
         summary: s.title,
-      })).sort((a: Session, b: Session) => 
+      })).sort((a, b) => 
         new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
       );
     } catch {
-      // If command fails, return empty array
       return [];
     }
   }
 
   async extractSession(sessionId: string, _projectPath: string): Promise<Session> {
+    const tempFile = path.join(os.tmpdir(), `opencode-session-${sessionId}.json`);
+    
     try {
-      const { stdout } = await exec(`opencode export ${sessionId}`, {
-        maxBuffer: 1024 * 1024 * 50,
-      });
-
-      const data = JSON.parse(stdout);
-      const messages: Message[] = this.parseMessages(data);
+      await exec(`opencode export ${sessionId} 2>/dev/null > ${tempFile}`);
+      const content = await fs.readFile(tempFile, 'utf-8');
+      await fs.unlink(tempFile).catch(() => {});
+      
+      const data: OpenCodeExport = JSON.parse(content);
+      const messages: Message[] = this.parseMessages(data.messages);
       
       return {
         id: sessionId,
         agent: this.agent,
         project_path: _projectPath,
         messages,
-        tool_calls: this.parseToolCalls(data),
-        files_read: this.extractFilesRead(data),
+        tool_calls: this.parseToolCalls(data.messages),
+        files_read: [],
         files_modified: this.extractFilesModified(data),
-        created_at: data.metadata?.created ?? new Date().toISOString(),
-        updated_at: data.metadata?.updated ?? new Date().toISOString(),
-        summary: this.extractSummary(data),
+        created_at: data.info.time?.created ? new Date(data.info.time.created).toISOString() : new Date().toISOString(),
+        updated_at: data.info.time?.updated ? new Date(data.info.time.updated).toISOString() : new Date().toISOString(),
+        summary: data.info.title ?? '',
       };
     } catch (error) {
-      // Fallback: return minimal session data
+      await fs.unlink(tempFile).catch(() => {});
       return {
         id: sessionId,
         agent: this.agent,
@@ -87,34 +103,65 @@ export class OpenCodeExtractor extends BaseExtractor {
     }
   }
 
-  private parseMessages(data: { conversation?: OpenCodeMessage[]; messages?: OpenCodeMessage[] }): Message[] {
-    const rawMessages = data.conversation ?? data.messages ?? [];
+  private parseMessages(messages: OpenCodeMessage[]): Message[] {
+    return messages.map((msg) => {
+      const textParts = msg.parts
+        .filter((p) => p.type === 'text' && p.text)
+        .map((p) => p.text)
+        .join('\n');
+      
+      const reasoningParts = msg.parts
+        .filter((p) => p.type === 'reasoning' && p.text)
+        .map((p) => p.text)
+        .join('\n');
+
+      const content = reasoningParts 
+        ? `${textParts}${textParts && reasoningParts ? '\n\n' : ''}<reasoning>\n${reasoningParts}\n</reasoning>`
+        : textParts;
+
+      return {
+        role: msg.info.role,
+        content,
+        timestamp: msg.info.time?.created ? new Date(msg.info.time.created).toISOString() : undefined,
+      };
+    });
+  }
+
+  private parseToolCalls(messages: OpenCodeMessage[]): ToolCall[] {
+    const toolCalls: ToolCall[] = [];
     
-    return rawMessages.map((m: OpenCodeMessage) => ({
-      role: m.role,
-      content: typeof m.content === 'string' ? m.content : JSON.stringify(m.content),
-      timestamp: m.timestamp,
-    }));
+    for (const msg of messages) {
+      for (const part of msg.parts) {
+        if (part.type === 'tool' && part.tool) {
+          toolCalls.push({
+            name: part.tool,
+            input: part.input ?? {},
+            result: part.output ?? '',
+            timestamp: msg.info.time?.created ? new Date(msg.info.time.created).toISOString() : new Date().toISOString(),
+          });
+        }
+      }
+    }
+    
+    return toolCalls;
   }
 
-  private parseToolCalls(data: { toolCalls?: ToolCall[]; tool_calls?: ToolCall[] }): ToolCall[] {
-    return data.toolCalls ?? data.tool_calls ?? [];
-  }
-
-  private extractFilesRead(data: { filesRead?: string[]; files_read?: string[] }): string[] {
-    return data.filesRead ?? data.files_read ?? [];
-  }
-
-  private extractFilesModified(data: { filesModified?: { path: string; summary: string; change_type?: string }[] }): FileChange[] {
-    const files = data.filesModified ?? [];
-    return files.map(f => ({
-      path: f.path,
-      summary: f.summary,
-      change_type: (f.change_type as 'created' | 'modified' | 'deleted') ?? 'modified',
-    }));
-  }
-
-  private extractSummary(data: { summary?: string; title?: string }): string {
-    return data.summary ?? data.title ?? '';
+  private extractFilesModified(data: OpenCodeExport): FileChange[] {
+    const files: Map<string, FileChange> = new Map();
+    
+    for (const msg of data.messages) {
+      const diffs = msg.info.summary?.diffs ?? [];
+      for (const diff of diffs) {
+        if (!files.has(diff.file)) {
+          files.set(diff.file, {
+            path: diff.file,
+            change_type: 'modified',
+            summary: `+${diff.additions} -${diff.deletions}`,
+          });
+        }
+      }
+    }
+    
+    return Array.from(files.values());
   }
 }

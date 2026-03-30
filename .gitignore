@@ -28,4 +28,3 @@ npm-debug.log*
 .env.*.local
 
 # OpenSpec
-openspec/changes/archive/

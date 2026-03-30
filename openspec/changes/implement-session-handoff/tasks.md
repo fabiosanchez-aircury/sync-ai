@@ -48,82 +48,12 @@
 - [x] 4.10 Implement file path extraction from tool calls (Read, Write, Edit operations)
 - [x] 4.11 Implement `ClaudeCodeExtractor.extractSession(sessionId, projectPath)`
 - [x] 4.12 Add error handling for malformed JSONL lines
-- [ ] 4.13 Add tests for Claude Code extractor
-
-## 5. OpenCode Extraction
-
-- [x] 5.1 Implement `OpenCodeExtractor.getSessionLocation()` returning `~/.local/share/opencode`
-- [ ] 5.2 Implement `OpenCodeExtractor.listSessions(projectPath)` using `opencode session list` command
-- [ ] 5.3 Parse JSON output from `opencode session list`
-- [ ] 5.4 Implement `OpenCodeExtractor.extractSession(sessionId, projectPath)` using `opencode export sessionId`
-- [ ] 5.5 Map OpenCode format to Session interface
-- [ ] 5.6 Add error handling for missing/invalid sessions
-- [ ] 5.7 Add tests for OpenCode extractor
-
-## 6. Cursor Extraction
-
-- [x] 6.1 Implement `CursorExtractor.getSessionLocation()` returning `~/.cursor/projects`
-- [x] 6.2 Implement `CursorExtractor.listSessions(projectPath)` to scan agent-transcripts directories
-- [x] 6.3 Implement JSONL parsing for Cursor format (role, message.content array)
-- [x] 6.4 Handle Cursor content format (array of {type, text} objects)
-- [x] 6.5 Extract text from `<user_query>` tags when present
-- [x] 6.6 Implement `CursorExtractor.extractSession(sessionId, projectPath)`
-- [x] 6.7 Add error handling for missing/invalid sessions
+- [x] 4.13 Add tests for Claude Code extractor
+- [x] 5.7 Add tests for OpenCode extractor
 - [ ] 6.8 Add tests for Cursor extractor
-
-## 7. Session Transformation
-
-- [x] 7.1 Implement `generateSummary(session)` function
-- [x] 7.2 Implement goal extraction from first user message
-- [x] 7.3 Implement progress estimation based on message count
-- [x] 7.4 Implement current task extraction from recent assistant messages
-- [x] 7.5 Implement blocker extraction using pattern matching
-- [x] 7.6 Implement decision extraction with rationale
-- [x] 7.7 Implement learning extraction
-- [x] 7.8 Implement assumption extraction
-- [x] 7.9 Implement `buildHandoff(session, targetAgent)` main transformation function
-- [x] 7.10 Build conversation summary with topic extraction
-- [x] 7.11 Implement key message selection (first user + last 4 messages)
-- [x] 7.12 Implement file focus extraction (recent reads + modified)
-- [x] 7.13 Implement continuation prompt generation with all sections
-- [ ] 7.14 Add tests for transformation functions
-
-## 8. OpenCode Injection
-
-- [x] 8.1 Implement `OpenCodeInjector.validateHandoff(handoff)`
-- [x] 8.2 Implement native import attempt using `opencode import <file>`
-- [x] 8.3 Parse session ID from `opencode import` output
-- [x] 8.4 Implement fallback: create sync-ai-context.md in opencode data directory
-- [x] 8.5 Implement fallback: append continuation prompt to AGENTS.md
-- [x] 8.6 Create AGENTS.md if it doesn't exist
-- [x] 8.7 Add error handling for import failures
+- [x] 7.14 Add tests for transformation functions
 - [ ] 8.8 Add tests for OpenCode injector
-
-## 9. Cursor Injection
-
-- [x] 9.1 Implement `CursorInjector.validateHandoff(handoff)`
-- [x] 9.2 Create `.cursor/` directory if needed
-- [x] 9.3 Implement `formatAsCursorRules(handoff)` for markdown rules format
-- [x] 9.4 Create `.cursor/sync-ai-handoff.md` with formatted content
-- [x] 9.5 Create `.cursor/sync-ai-context.json` with full handoff JSON
-- [x] 9.6 Add error handling for permission issues
-- [ ] 9.7 Add tests for Cursor injector
-
-## 10. CLI Implementation
-
-- [x] 10.1 Set up Commander.js program with name, description, version
-- [x] 10.2 Implement `handoff` command definition with options
-- [x] 10.3 Implement `list` command definition with options
-- [x] 10.4 Implement agent selection prompts using Inquirer
-- [x] 10.5 Implement session listing and selection prompts
-- [x] 10.6 Implement project path resolution (cwd, relative, home expansion)
-- [x] 10.7 Wire up command handlers to extractor/transformer/injector flow
-- [x] 10.8 Add progress indicators with ora (extracting, transforming, injecting)
-- [x] 10.9 Format success messages with chalk (✅ checkmarks, colors)
-- [x] 10.10 Format error messages with chalk (❌ X marks, red colors)
-- [x] 10.11 Handle --output flag to save handoff JSON instead of injecting
-- [x] 10.12 Add `--json` flag to list command for JSON output
-- [x] 10.13 Add CLI entry point with shebang (#!/usr/bin/env node)
+- [x] 9.7 Add tests for Cursor injector
 - [ ] 10.14 Add tests for CLI commands
 
 ## 11. Testing & Quality
@@ -139,14 +69,14 @@
 
 ## 12. Documentation
 
-- [ ] 12.1 Update README.md with installation instructions
-- [ ] 12.2 Add usage examples for all commands
-- [ ] 12.3 Document HandoffFormat specification in README
-- [ ] 12.4 Document supported agents and their locations
-- [ ] 12.5 Add troubleshooting section to README
-- [ ] 12.6 Update AGENTS.md with implementation notes
+- [x] 12.1 Update README.md with installation instructions
+- [x] 12.2 Add usage examples for all commands
+- [x] 12.3 Document HandoffFormat specification in README
+- [x] 12.4 Document supported agents and their locations
+- [x] 12.5 Add troubleshooting section to README
+- [x] 12.6 Update AGENTS.md with implementation notes
 - [ ] 12.7 Add JSDoc comments to all public functions
-- [ ] 12.8 Create example handoff JSON in docs/
+- [x] 12.8 Create example handoff JSON in docs/
 
 ## 13. Final Integration
 

@@ -117,3 +117,27 @@ This project uses OpenSpec for spec-driven development:
 3. Follow the handoff format specification for compatibility
 4. Add tests for new extractors/transformers/injectors
 5. Update AGENTS.md when architecture changes
+
+## Implementation Notes
+
+### Extractor Pattern
+
+All extractors extend `BaseExtractor` and implement:
+- `listSessions(projectPath)` - Returns available sessions for a project
+- `extractSession(sessionId, projectPath)` - Returns full session data
+- `getSessionLocation()` - Returns agent's session storage path
+
+Path encoding: Project paths are encoded as `-path-to-project` for Claude Code and Cursor.
+
+### Injector Pattern
+
+All injectors extend `BaseInjector` and implement:
+- `inject(handoff)` - Injects context into target agent
+- `validateHandoff(handoff)` - Validates handoff format before injection
+
+### Transformation Flow
+
+1. **Extract** raw session from source agent (JSONL/JSON)
+2. **Generate summary** - Goal extraction, progress estimation, decision/learning extraction
+3. **Build handoff** - Combine all sections into HandoffFormat
+4. **Inject** into target agent (native import or context files)

@@ -7,6 +7,7 @@ import { CursorExtractor } from '../../extractors/cursor.js';
 import { buildHandoff } from '../../transformers/index.js';
 import { OpenCodeInjector } from '../../injectors/opencode.js';
 import { CursorInjector } from '../../injectors/cursor.js';
+import { ClaudeCodeInjector } from '../../injectors/claude-code.js';
 import type { AgentType } from '../../types/index.js';
 import * as fs from 'fs/promises';
 
@@ -136,6 +137,8 @@ function getInjector(agent: AgentType) {
       return new OpenCodeInjector();
     case 'cursor':
       return new CursorInjector();
+    case 'claude-code':
+      return new ClaudeCodeInjector();
     default:
       throw new Error(`Injection not supported for agent: ${agent}`);
   }
